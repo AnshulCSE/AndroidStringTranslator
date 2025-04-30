@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Supported Languages - Android String Translator</title>
+    <link rel="stylesheet" href="https://cdn.replit.com/agent/bootstrap-agent-dark-theme.min.css">
+    <style>
+        .container {
+            max-width: 800px;
+        }
+        .app-header {
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+            background-color: rgba(var(--bs-dark-rgb), 0.5);
+            border-radius: 0.5rem;
+        }
+        .language-badge {
+            margin: 0.25rem;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container my-4">
+        <header class="app-header text-center">
+            <h1 class="display-5 fw-bold">Supported Languages</h1>
+            <p class="lead">Language codes for our free dictionary-based translation system</p>
+        </header>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}" role="alert">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        
+        <div class="card mb-4">
+            <div class="card-header">
+                <h2>Supported Languages</h2>
+                <p class="text-muted mb-0">Available language codes for our dictionary-based translation</p>
+            </div>
+            <div class="card-body">
+                <h5>Global Languages</h5>
+                <div class="d-flex flex-wrap mb-4">
+                    <span class="badge bg-info language-badge">en</span>
+                    <span class="badge bg-info language-badge">fr</span>
+                    <span class="badge bg-info language-badge">es</span>
+                    <span class="badge bg-info language-badge">de</span>
+                    <span class="badge bg-info language-badge">it</span>
+                    <span class="badge bg-info language-badge">pt</span>
+                    <span class="badge bg-info language-badge">pt-BR</span>
+                    <span class="badge bg-info language-badge">zh</span>
+                    <span class="badge bg-info language-badge">zh-CN</span>
+                    <span class="badge bg-info language-badge">zh-TW</span>
+                    <span class="badge bg-info language-badge">ja</span>
+                    <span class="badge bg-info language-badge">ko</span>
+                    <span class="badge bg-info language-badge">ru</span>
+                    <span class="badge bg-info language-badge">nl</span>
+                </div>
+                
+                <h5>Indian Languages</h5>
+                <div class="d-flex flex-wrap">
+                    <span class="badge bg-success language-badge">hi (Hindi)</span>
+                    <span class="badge bg-success language-badge">bn (Bengali)</span>
+                    <span class="badge bg-success language-badge">mr (Marathi)</span>
+                    <span class="badge bg-success language-badge">ta (Tamil)</span>
+                    <span class="badge bg-success language-badge">te (Telugu)</span>
+                    <span class="badge bg-success language-badge">kn (Kannada)</span>
+                    <span class="badge bg-success language-badge">ml (Malayalam)</span>
+                    <span class="badge bg-success language-badge">gu (Gujarati)</span>
+                    <span class="badge bg-success language-badge">pa (Punjabi)</span>
+                    <span class="badge bg-success language-badge">or (Odia)</span>
+                    <span class="badge bg-success language-badge">as (Assamese)</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="alert alert-info">
+            <h5>Using Language Codes</h5>
+            <p>When specifying target languages, use a comma-separated list of these language codes. For example:</p>
+            <p class="mb-0"><code>fr,es,de,ja,zh-CN</code></p>
+        </div>
+        
+        <div class="alert alert-warning">
+            <h5>About Our Dictionary Translator</h5>
+            <p>Our translation system uses a built-in dictionary approach that doesn't rely on external APIs:</p>
+            <ul>
+                <li>No API keys or internet connection needed</li>
+                <li>Basic word-by-word translation for common UI terms</li>
+                <li>Preserves Android format specifiers (%s, %d, etc.)</li>
+                <li>Handles HTML tags and maintains original structure</li>
+            </ul>
+            <p class="mb-0">This is a simple translation system intended for basic Android UI strings. For professional translation, consider using a specialized service.</p>
+        </div>
+        
+        <div class="d-flex justify-content-between">
+            <a href="{{ url_for('index') }}" class="btn btn-primary">Back to Translator</a>
+        </div>
+    </div>
+</body>
+</html>

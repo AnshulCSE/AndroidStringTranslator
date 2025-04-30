@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Android String Translator</title>
+    <link rel="stylesheet" href="https://cdn.replit.com/agent/bootstrap-agent-dark-theme.min.css">
+    <style>
+        .container {
+            max-width: 800px;
+        }
+        .feature-icon {
+            font-size: 2.5rem;
+            color: var(--bs-info);
+            margin-bottom: 1rem;
+        }
+        .app-header {
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+            background-color: rgba(var(--bs-dark-rgb), 0.5);
+            border-radius: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container my-4">
+        <header class="app-header text-center">
+            <h1 class="display-5 fw-bold">Android String Translator</h1>
+            <p class="lead">Automate translation of Android string resources into multiple languages</p>
+        </header>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}" role="alert">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <div class="row mb-5">
+            <div class="col-md-4 text-center">
+                <div class="feature-icon">📄</div>
+                <h3>Parse XML Files</h3>
+                <p>Upload your Android strings.xml file</p>
+            </div>
+            <div class="col-md-4 text-center">
+                <div class="feature-icon">🌐</div>
+                <h3>Multiple Languages</h3>
+                <p>Translate to any supported language</p>
+            </div>
+            <div class="col-md-4 text-center">
+                <div class="feature-icon">⚙️</div>
+                <h3>Format Preservation</h3>
+                <p>Maintains proper XML structure</p>
+            </div>
+        </div>
+        
+        <div class="card">
+            <div class="card-header">
+                <h2>Upload Strings XML</h2>
+            </div>
+            <div class="card-body">
+                <form action="{{ url_for('upload_file') }}" method="post" enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <label for="file" class="form-label">Android strings.xml file:</label>
+                        <input type="file" class="form-control" id="file" name="file" accept=".xml" required>
+                        <div class="form-text">Upload your source strings.xml file.</div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="languages" class="form-label">Target Languages:</label>
+                        <div class="d-flex gap-2">
+                            <input type="text" class="form-control" id="languages" name="languages" 
+                                  placeholder="e.g., fr,es,de,ja,zh" required>
+                            <button type="button" class="btn btn-outline-info" id="addIndianLang">+ Indian Languages</button>
+                        </div>
+                        <div class="form-text">
+                            Comma-separated list of language codes. 
+                            <a href="{{ url_for('supported_languages') }}">View supported languages</a>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3 d-none" id="indianLanguages">
+                        <label class="form-label">Select Indian Languages:</label>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="form-check">
+                                    <input class="form-check-input indian-lang" type="checkbox" id="lang_hi" value="hi">
+                                    <label class="form-check-label" for="lang_hi">Hindi (hi)</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input indian-lang" type="checkbox" id="lang_bn" value="bn">
+                                    <label class="form-check-label" for="lang_bn">Bengali (bn)</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input indian-lang" type="checkbox" id="lang_mr" value="mr">
+                                    <label class="form-check-label" for="lang_mr">Marathi (mr)</label>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-check">
+                                    <input class="form-check-input indian-lang" type="checkbox" id="lang_ta" value="ta">
+                                    <label class="form-check-label" for="lang_ta">Tamil (ta)</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input indian-lang" type="checkbox" id="lang_te" value="te">
+                                    <label class="form-check-label" for="lang_te">Telugu (te)</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input indian-lang" type="checkbox" id="lang_kn" value="kn">
+                                    <label class="form-check-label" for="lang_kn">Kannada (kn)</label>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-check">
+                                    <input class="form-check-input indian-lang" type="checkbox" id="lang_ml" value="ml">
+                                    <label class="form-check-label" for="lang_ml">Malayalam (ml)</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input indian-lang" type="checkbox" id="lang_gu" value="gu">
+                                    <label class="form-check-label" for="lang_gu">Gujarati (gu)</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input indian-lang" type="checkbox" id="lang_pa" value="pa">
+                                    <label class="form-check-label" for="lang_pa">Punjabi (pa)</label>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-check">
+                                    <input class="form-check-input indian-lang" type="checkbox" id="lang_or" value="or">
+                                    <label class="form-check-label" for="lang_or">Odia (or)</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input indian-lang" type="checkbox" id="lang_as" value="as">
+                                    <label class="form-check-label" for="lang_as">Assamese (as)</label>
+                                </div>
+                                <div class="form-check">
+                                    <button type="button" class="btn btn-sm btn-outline-secondary mt-2" id="selectAllIndian">Select All</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Translation Method:</label>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="api" id="free" value="free" checked>
+                            <label class="form-check-label" for="free">
+                                Free Dictionary Translator
+                            </label>
+                            <div class="form-text">Comprehensive translation with improved context handling</div>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="api" id="dictionary" value="dictionary">
+                            <label class="form-check-label" for="dictionary">
+                                Basic Dictionary Lookup
+                            </label>
+                            <div class="form-text">Simple word-by-word translation</div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="skip_existing" name="skip_existing" checked>
+                            <label class="form-check-label" for="skip_existing">
+                                Skip already translated strings
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="preserve_comments" name="preserve_comments" checked>
+                            <label class="form-check-label" for="preserve_comments">
+                                Preserve comments in XML files
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="alert alert-success" role="alert">
+                        <h5>No API Keys Required!</h5>
+                        <p>Our dictionary-based translation system doesn't require any API keys or internet connection.</p>
+                        <p class="mb-0">The translations are performed locally using our built-in dictionaries for common Android UI strings.</p>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary">Upload & Continue</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const addIndianLangBtn = document.getElementById('addIndianLang');
+            const indianLanguagesDiv = document.getElementById('indianLanguages');
+            const selectAllBtn = document.getElementById('selectAllIndian');
+            const languagesInput = document.getElementById('languages');
+            const indianLangCheckboxes = document.querySelectorAll('.indian-lang');
+            
+            // Toggle the Indian languages section
+            addIndianLangBtn.addEventListener('click', function() {
+                if (indianLanguagesDiv.classList.contains('d-none')) {
+                    indianLanguagesDiv.classList.remove('d-none');
+                    addIndianLangBtn.textContent = '- Hide Indian Languages';
+                } else {
+                    indianLanguagesDiv.classList.add('d-none');
+                    addIndianLangBtn.textContent = '+ Indian Languages';
+                }
+            });
+            
+            // Select all Indian languages
+            selectAllBtn.addEventListener('click', function() {
+                const allChecked = Array.from(indianLangCheckboxes).every(cb => cb.checked);
+                
+                indianLangCheckboxes.forEach(checkbox => {
+                    checkbox.checked = !allChecked;
+                });
+                
+                if (allChecked) {
+                    selectAllBtn.textContent = 'Select All';
+                } else {
+                    selectAllBtn.textContent = 'Deselect All';
+                }
+                
+                updateLanguagesInput();
+            });
+            
+            // Update languages input when checkboxes are clicked
+            indianLangCheckboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', updateLanguagesInput);
+            });
+            
+            // Function to update the languages input based on selected checkboxes
+            function updateLanguagesInput() {
+                // Get current value and split by comma
+                let currentValue = languagesInput.value.trim();
+                let languages = currentValue ? currentValue.split(',').map(lang => lang.trim()) : [];
+                
+                // Filter out any existing Indian languages
+                languages = languages.filter(lang => 
+                    !['hi', 'bn', 'mr', 'ta', 'te', 'kn', 'ml', 'gu', 'pa', 'or', 'as'].includes(lang)
+                );
+                
+                // Add checked Indian languages
+                indianLangCheckboxes.forEach(checkbox => {
+                    if (checkbox.checked && !languages.includes(checkbox.value)) {
+                        languages.push(checkbox.value);
+                    }
+                });
+                
+                // Update the input value
+                languagesInput.value = languages.join(',');
+            }
+        });
+    </script>
+</body>
+</html>
