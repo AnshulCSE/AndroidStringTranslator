@@ -162,6 +162,22 @@ def list_languages():
     for code in indian_langs:
         click.echo(f"  {code}")
 
+def post_process_translations(translations):
+    """
+    Post-process translated strings to clean up formatting issues.
+    For example, ensure proper spacing around punctuation.
+    """
+    processed = []
+    for text in translations:
+        # Add a space after punctuation if missing
+        text = text.replace(". ", ".").replace(".", ". ")
+        text = text.replace(", ", ",").replace(",", ", ")
+        text = text.replace("! ", "!").replace("!", "! ")
+        text = text.replace("? ", "?").replace("?", "? ")
+        # Remove extra spaces
+        text = " ".join(text.split())
+        processed.append(text)
+    return processed
 
 if __name__ == '__main__':
     cli()
