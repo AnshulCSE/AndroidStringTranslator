@@ -7,6 +7,8 @@ import logging
 import json
 from werkzeug.utils import secure_filename
 
+# This is the text comment.
+
 # Set up logging
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
