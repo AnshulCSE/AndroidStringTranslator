@@ -100,7 +100,7 @@ def confirm():
 def translate():
     if 'translation_info' not in session:
         flash('No translation information', 'error')
-        return redirect(url_for('index'))
+        return redirect(url_for('index'))   
     
     translation_info = session['translation_info']
     
